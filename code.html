@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            margin: 0;
+        }
+        .timer {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .controls button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .controls button:hover {
+            background-color: #45a049;
+        }
+        .controls button:disabled {
+            background-color: #ddd;
+            color: #999;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer">
+        <h1 id="time">25:00</h1>
+        <div class="controls">
+            <button id="start">Start</button>
+            <button id="stop" disabled>Stop</button>
+            <button id="reset" disabled>Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const resetButton = document.getElementById('reset');
+        const timeDisplay = document.getElementById('time');
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let timer;
+
+        function updateTimeDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimeDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    alert("Time's up!");
+                    resetTimer();
+                }
+            }, 1000);
+
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            resetButton.disabled = false;
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timeLeft = 25 * 60;
+            updateTimeDisplay();
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            resetButton.disabled = true;
+        }
+
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+        resetButton.addEventListener('click', resetTimer);
+    </script>
+</body>
+</html>
