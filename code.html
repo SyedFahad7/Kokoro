@@ -1,22 +1,17 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-        .press-start-2p-regular {
-            font-family: "Press Start 2P", system-ui;
-            font-weight: 400;
-            font-style: normal;
+        .press-start-2p {
+            font-family: 'Press Start 2P', cursive;
         }
         .tab-button {
             transition: all 0.3s ease;
@@ -44,10 +39,6 @@
             transform: translateY(0);
         }
         @media (max-width: 640px) {
-            .container {
-                margin-left: 1rem;
-                margin-right: 1rem;
-            }
             .text-6xl {
                 font-size: 2.5rem;
             }
@@ -58,73 +49,77 @@
                 height: 2.5rem;
             }
         }
-        @media (min-width: 240px) and (max-width: 390px) {
-            #custom-container {
-                padding-left: 10%;
-            }
-        }
     </style>
 </head>
 <body class="bg-gray-900 text-white h-screen flex items-center justify-center relative">
+    <!-- Settings Button -->
     <div class="absolute top-4 right-4">
-        <button class="text-white focus:outline-none" id="settingsButton">
+        <button class="text-white focus:outline-none" id="settingsButton" aria-label="Open settings">
             <i class="fas fa-cog fa-2x"></i>
         </button>
     </div>
+
+    <!-- Main Container -->
     <div class="container flex flex-col items-center">
-        <div class="bg-gray-800 p-8 rounded-lg text-center mb-8 " id="custom-container">
+        <!-- Timer Box -->
+        <div class="bg-gray-800 p-8 rounded-lg text-center mb-8">
             <div class="flex space-x-4 mb-4">
-                <button class="tab-button press-start-2p-regular text-red-500 focus:outline-none active" id="pomodoro">
+                <button class="tab-button press-start-2p text-red-500 focus:outline-none active" id="pomodoro" aria-label="Pomodoro">
                     Pomodoro
                 </button>
-                <button class="tab-button press-start-2p-regular text-gray-400 hover:text-white focus:outline-none" id="shortBreak">
-                    Short break
+                <button class="tab-button press-start-2p text-gray-400 hover:text-white focus:outline-none" id="shortBreak" aria-label="Short Break">
+                    Short Break
                 </button>
-                <button class="tab-button press-start-2p-regular text-gray-400 hover:text-white focus:outline-none" id="longBreak">
-                    Long break
+                <button class="tab-button press-start-2p text-gray-400 hover:text-white focus:outline-none" id="longBreak" aria-label="Long Break">
+                    Long Break
                 </button>
             </div>
-            <div class="text-6xl press-start-2p-regular mb-4" id="timer">
+            <div class="text-6xl press-start-2p mb-4" id="timer">
                 25:00
             </div>
             <div class="flex justify-center space-x-4">
-                <button class="press-start-2p-regular control-button bg-red-500 text-white px-4 py-2 rounded flex items-center" id="start">
+                <button class="press-start-2p control-button bg-red-500 text-white px-4 py-2 rounded flex items-center" id="start" aria-label="Start">
                     <i class="fas fa-play mr-2"></i>
                     START
                 </button>
-                <button class="control-button text-white focus:outline-none" id="restart">
+                <button class="control-button text-white focus:outline-none" id="restart" aria-label="Restart">
                     <i class="fas fa-redo"></i>
                 </button>
             </div>
         </div>
-        <div class="relative w-7/12 mb-16 mr-12">
-            <img id="snail" src="kokoro.png" alt="Cartoon snail with a red shell" class="w-16 h-16 absolute left-0"/>
+
+        <!-- Progress Bar and Snail -->
+        <div class="relative w-7/12 mb-16">
+            <img id="snail" src="kokoro.png" alt="Cartoon snail with a red shell" class="w-16 h-16 absolute left-0">
         </div>
         <div class="w-7/12 bg-gray-700 h-2 relative mt-2">
             <div id="progress" class="bg-red-500 h-2" style="width: 0%;"></div>
         </div>
     </div>
+
+    <!-- Settings Pane -->
     <div class="settings-pane fixed bottom-0 left-0 w-full bg-gray-800 p-8 rounded-t-lg" id="settingsPane">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl">Settings</h2>
-            <button class="text-white focus:outline-none" id="closeSettings">
+            <button class="text-white focus:outline-none" id="closeSettings" aria-label="Close settings">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="mb-4">
             <label class="block mb-2" for="pomodoroTime">Pomodoro Time (minutes)</label>
-            <input class="w-full p-2 rounded bg-gray-700 text-white" id="pomodoroTime" type="number" value="25"/>
+            <input class="w-full p-2 rounded bg-gray-700 text-white" id="pomodoroTime" type="number" value="25" min="1">
         </div>
         <div class="mb-4">
             <label class="block mb-2" for="shortBreakTime">Short Break Time (minutes)</label>
-            <input class="w-full p-2 rounded bg-gray-700 text-white" id="shortBreakTime" type="number" value="5"/>
+            <input class="w-full p-2 rounded bg-gray-700 text-white" id="shortBreakTime" type="number" value="5" min="1">
         </div>
         <div class="mb-4">
             <label class="block mb-2" for="longBreakTime">Long Break Time (minutes)</label>
-            <input class="w-full p-2 rounded bg-gray-700 text-white" id="longBreakTime" type="number" value="15"/>
+            <input class="w-full p-2 rounded bg-gray-700 text-white" id="longBreakTime" type="number" value="15" min="1">
         </div>
         <button class="bg-red-500 text-white px-4 py-2 rounded" id="saveSettings">Save</button>
     </div>
+
     <script>
         let timerDuration = 25 * 60;
         let timer;
@@ -150,61 +145,18 @@
         const shortBreakTimeInput = document.getElementById('shortBreakTime');
         const longBreakTimeInput = document.getElementById('longBreakTime');
 
-        pomodoroButton.addEventListener('click', () => {
-            setTimer(25 * 60);
-            setActiveButton(pomodoroButton);
-        });
+        // Event Listeners
+        pomodoroButton.addEventListener('click', () => setTimer(25 * 60, pomodoroButton));
+        shortBreakButton.addEventListener('click', () => setTimer(5 * 60, shortBreakButton));
+        longBreakButton.addEventListener('click', () => setTimer(15 * 60, longBreakButton));
 
-        shortBreakButton.addEventListener('click', () => {
-            setTimer(5 * 60);
-            setActiveButton(shortBreakButton);
-        });
+        startButton.addEventListener('click', toggleTimer);
+        restartButton.addEventListener('click', () => setTimer(initialDuration));
+        settingsButton.addEventListener('click', () => settingsPane.classList.add('open'));
+        closeSettings.addEventListener('click', () => settingsPane.classList.remove('open'));
+        saveSettings.addEventListener('click', saveSettingsHandler);
 
-        longBreakButton.addEventListener('click', () => {
-            setTimer(15 * 60);
-            setActiveButton(longBreakButton);
-        });
-
-        startButton.addEventListener('click', () => {
-            if (isRunning) {
-                clearInterval(timer);
-                startButton.innerHTML = '<i class="fas fa-play mr-2"></i> START';
-            } else {
-                startTimer();
-                startButton.innerHTML = '<i class="fas fa-pause mr-2"></i> PAUSE';
-            }
-            isRunning = !isRunning;
-        });
-
-        restartButton.addEventListener('click', () => {
-            setTimer(initialDuration);
-        });
-
-        settingsButton.addEventListener('click', () => {
-            settingsPane.classList.add('open');
-        });
-
-        closeSettings.addEventListener('click', () => {
-            settingsPane.classList.remove('open');
-        });
-
-        saveSettings.addEventListener('click', () => {
-            const pomodoroTime = parseInt(pomodoroTimeInput.value) * 60;
-            const shortBreakTime = parseInt(shortBreakTimeInput.value) * 60;
-            const longBreakTime = parseInt(longBreakTimeInput.value) * 60;
-
-            if (pomodoroButton.classList.contains('active')) {
-                setTimer(pomodoroTime);
-            } else if (shortBreakButton.classList.contains('active')) {
-                setTimer(shortBreakTime);
-            } else if (longBreakButton.classList.contains('active')) {
-                setTimer(longBreakTime);
-            }
-
-            settingsPane.classList.remove('open');
-        });
-
-        function setTimer(seconds) {
+        function setTimer(seconds, activeButton) {
             clearInterval(timer);
             timerDuration = seconds;
             initialDuration = seconds;
@@ -213,6 +165,18 @@
             snail.style.left = '0%';
             startButton.innerHTML = '<i class="fas fa-play mr-2"></i> START';
             isRunning = false;
+            setActiveButton(activeButton);
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                startButton.innerHTML = '<i class="fas fa-play mr-2"></i> START';
+            } else {
+                startTimer();
+                startButton.innerHTML = '<i class="fas fa-pause mr-2"></i> PAUSE';
+            }
+            isRunning = !isRunning;
         }
 
         function startTimer() {
@@ -244,16 +208,31 @@
 
         function setActiveButton(activeButton) {
             [pomodoroButton, shortBreakButton, longBreakButton].forEach(button => {
-                button.classList.remove('active');
+                button.classList.remove('active', 'text-red-500');
                 button.classList.add('text-gray-400');
-                button.classList.remove('text-red-500');
             });
-            activeButton.classList.add('active');
+            activeButton.classList.add('active', 'text-red-500');
             activeButton.classList.remove('text-gray-400');
-            activeButton.classList.add('text-red-500');
         }
 
-        setTimer(25 * 60);
+        function saveSettingsHandler() {
+            const pomodoroTime = parseInt(pomodoroTimeInput.value) * 60;
+            const shortBreakTime = parseInt(shortBreakTimeInput.value) * 60;
+            const longBreakTime = parseInt(longBreakTimeInput.value) * 60;
+
+            if (pomodoroButton.classList.contains('active')) {
+                setTimer(pomodoroTime, pomodoroButton);
+            } else if (shortBreakButton.classList.contains('active')) {
+                setTimer(shortBreakTime, shortBreakButton);
+            } else if (longBreakButton.classList.contains('active')) {
+                setTimer(longBreakTime, longBreakButton);
+            }
+
+            settingsPane.classList.remove('open');
+        }
+
+        // Initialize
+        setTimer(25 * 60, pomodoroButton);
     </script>
 </body>
 </html>
